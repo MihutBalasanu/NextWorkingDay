@@ -6,6 +6,7 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
+        NextWorkingDay myDay = new NextWorkingDay();
         System.out.println("Input a date in the format: yyyy/mm/dd.");
         Scanner s = new Scanner(System.in);
         String date = s.nextLine();
@@ -17,6 +18,6 @@ public class Main {
         cal.set(year, month -1, day);
         Date myDate = cal.getTime();
 
-        System.out.println("The next working date is: " + NextWorkingDay.getNextWorkingDay(myDate));
+        System.out.println("The next working date is: " + myDay.getNextWorkingDay(myDate));
     }
 }

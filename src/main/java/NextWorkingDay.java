@@ -28,7 +28,7 @@ public class NextWorkingDay {
 
     }
 
-    public static Date addDays(Date date, int days) {
+    public Date addDays(Date date, int days) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         cal.add(Calendar.DATE, days);
@@ -36,8 +36,7 @@ public class NextWorkingDay {
 
     }
 
-    public static boolean testDay(Date date) {
-        boolean testDay = true;
+    public boolean isNonWorkingDay(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         int year = cal.get(Calendar.YEAR);
@@ -45,43 +44,44 @@ public class NextWorkingDay {
         int day = cal.get(Calendar.DAY_OF_MONTH);
 
         if(day == 1 && month == 0){
-            testDay = false;
+            return false;
         }
-        if(day == 2 && month == 0){
-            testDay = false;
+        else if(day == 2 && month == 0){
+            return false;
         }
-        if(day == 24 && month == 0){
-            testDay = false;
+        else if(day == 24 && month == 0){
+            return false;
         }
         Date easterSundayDate = getOrthodoxEaster(year).getTime();
-        if(date == addDays(easterSundayDate,1)){
-            testDay = false;
+        if(date.equals(addDays(easterSundayDate,1))){
+            return false;
         }
-        if(day == 1 && month == 4){
-            testDay = false;
+        else if(day == 1 && month == 4){
+            return false;
         }
-        if(date == addDays(easterSundayDate,50)) {
-            testDay = false;
+        else if(date.equals(addDays(easterSundayDate,50))){
+            return false;
         }
-        if(day == 15 && month == 7){
-            testDay = false;
+        else if(day == 15 && month == 7){
+            return false;
         }
-        if(day == 30 && month == 10){
-            testDay = false;
+        else if(day == 30 && month == 10){
+            return false;
         }
-        if(day == 1 && month == 11){
-            testDay = false;
+        else if(day == 1 && month == 11){
+            return false;
         }
-        if(day == 25 && month == 11){
-            testDay = false;
-        }if(day == 26 && month == 11){
-            testDay = false;
+        else if(day == 25 && month == 11){
+            return false;
         }
-        return testDay;
+        else if(day == 26 && month == 11){
+            return false;
+        }
+        return true;
 
     }
 
-     public static Date getNextWorkingDay(Date date) {
+     public Date getNextWorkingDay(Date date) {
          Date nextWorkingDay;
          Calendar cal = Calendar.getInstance();
          cal.setTime(date);
@@ -94,7 +94,7 @@ public class NextWorkingDay {
             } else {
                 nextWorkingDay = addDays(date, 1);
             }
-            while (!testDay(nextWorkingDay)) {
+            while (!isNonWorkingDay(nextWorkingDay)) {
                 nextWorkingDay = addDays(nextWorkingDay, 1);
             }
         }

@@ -43,24 +43,26 @@ public class NextWorkingDayTest {
     @Test
     public void testDayTest() {
         Calendar cal = Calendar.getInstance();
+        NextWorkingDay day = new NextWorkingDay();
         cal.set(2019, 0, 1);
-        Assert.assertEquals(false, NextWorkingDay.testDay(cal.getTime()));
+        Assert.assertEquals(false, day.isNonWorkingDay(cal.getTime()));
 
 
 //      Rusalii 2021 - luni
         cal.set(2021,5,21);
-        Assert.assertEquals(false,NextWorkingDay.testDay(cal.getTime()));
+        Assert.assertEquals(false,day.isNonWorkingDay(cal.getTime()));
 
 
         cal.set(2019, 7, 15);
-        Assert.assertEquals(false, NextWorkingDay.testDay(cal.getTime()));
+        Assert.assertEquals(false, day.isNonWorkingDay(cal.getTime()));
     }
     @Test
     public void getNextWorkingDayTest(){
         Calendar cal1 = Calendar.getInstance();
         Calendar cal2 = Calendar.getInstance();
+        NextWorkingDay day = new NextWorkingDay();
         cal1.set(2021,3,30);
         cal2.set(2021,4,3);
-        Assert.assertEquals(true,isSameDay(cal2.getTime(),NextWorkingDay.getNextWorkingDay(cal1.getTime())));
+        Assert.assertEquals(true,isSameDay(cal2.getTime(),day.getNextWorkingDay(cal1.getTime())));
     }
 }
