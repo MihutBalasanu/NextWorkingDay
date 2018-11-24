@@ -1,7 +1,12 @@
-import java.util.Calendar;
-import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class NextWorkingDay {
+
+    private static String[] permanentLegalDays = {
+            "01.01", "02.01", "24,01", "01.06", "15.08", "30.11", "01.12", "25.12", "26.12" //...toate zilele legale fixe
+    };
 
 
     public static Calendar getOrthodoxEaster(int myear) {
@@ -33,54 +38,36 @@ public class NextWorkingDay {
         cal.setTime(date);
         cal.add(Calendar.DATE, days);
         return cal.getTime();
-
     }
 
-    public boolean isNonWorkingDay(Date date) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH);
-        int day = cal.get(Calendar.DAY_OF_MONTH);
-
-        if(day == 1 && month == 0){
-            return false;
-        }
-        else if(day == 2 && month == 0){
-            return false;
-        }
-        else if(day == 24 && month == 0){
-            return false;
-        }
-        Date easterSundayDate = getOrthodoxEaster(year).getTime();
-        if(date.equals(addDays(easterSundayDate,1))){
-            return false;
-        }
-        else if(day == 1 && month == 4){
-            return false;
-        }
-        else if(date.equals(addDays(easterSundayDate,50))){
-            return false;
-        }
-        else if(day == 15 && month == 7){
-            return false;
-        }
-        else if(day == 30 && month == 10){
-            return false;
-        }
-        else if(day == 1 && month == 11){
-            return false;
-        }
-        else if(day == 25 && month == 11){
-            return false;
-        }
-        else if(day == 26 && month == 11){
-            return false;
-        }
-        return true;
-
+    public boolean isLegalHoliday(Date date) {
+        List<String> allLegalDays = getLegalHolidaysForYear(getYearOfDate(date));
+        String checkedDateLiteral = toStringDayAndMonth(date);
+        return allLegalDays.contains(checkedDateLiteral);
     }
 
+    private int getYearOfDate(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.get(Calendar.YEAR);
+    }
+
+    private List<String> getLegalHolidaysForYear(int year) {
+        List<String> allLegalDays = Arrays.asList(permanentLegalDays);
+        Calendar easter = getOrthodoxEaster(year);
+        Date easterSunday = (Date)easter.getTime().clone();
+        easter.add(Calendar.DATE, 1);
+        Date easterMonday = easter.getTime();
+        allLegalDays.add(toStringDayAndMonth(easterSunday));
+        allLegalDays.add(toStringDayAndMonth(easterMonday));
+
+        return allLegalDays;
+    }
+
+    private String toStringDayAndMonth(Date date) {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM");
+        return formatter.format(date);
+    }
      public Date getNextWorkingDay(Date date) {
          Date nextWorkingDay;
          Calendar cal = Calendar.getInstance();
@@ -94,7 +81,7 @@ public class NextWorkingDay {
             } else {
                 nextWorkingDay = addDays(date, 1);
             }
-            while (!isNonWorkingDay(nextWorkingDay)) {
+            while (!isLegalHoliday(nextWorkingDay)) {
                 nextWorkingDay = addDays(nextWorkingDay, 1);
             }
         }

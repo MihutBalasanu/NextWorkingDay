@@ -45,16 +45,16 @@ public class NextWorkingDayTest {
         Calendar cal = Calendar.getInstance();
         NextWorkingDay day = new NextWorkingDay();
         cal.set(2019, 0, 1);
-        Assert.assertEquals(false, day.isNonWorkingDay(cal.getTime()));
+        Assert.assertEquals(false, day.isLegalHoliday(cal.getTime()));
 
 
 //      Rusalii 2021 - luni
         cal.set(2021,5,21);
-        Assert.assertEquals(false,day.isNonWorkingDay(cal.getTime()));
+        Assert.assertEquals(false,day.isLegalHoliday(cal.getTime()));
 
 
         cal.set(2019, 7, 15);
-        Assert.assertEquals(false, day.isNonWorkingDay(cal.getTime()));
+        Assert.assertEquals(false, day.isLegalHoliday(cal.getTime()));
     }
     @Test
     public void getNextWorkingDayTest(){

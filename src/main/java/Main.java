@@ -15,7 +15,7 @@ public class Main {
         Integer month = Integer.valueOf(coords[1]);
         Integer day = Integer.valueOf(coords[2]);
         Calendar cal = Calendar.getInstance();
-        cal.set(year, month -1, day);
+        cal.set(year, month, day);
         Date myDate = cal.getTime();
 
         System.out.println("The next working date is: " + myDay.getNextWorkingDay(myDate));
